@@ -6,7 +6,7 @@
  *
  * @example
  * ```ts
- * import { OizomDatapoint } from "@panth977/routes";
+ * import { OizomDatapoint } from "@oizom/oizom-datapoints";
  * 
  * const dpGap = input.period === 'raw' ? 60 : input.period === 'hr' ? 3600 : 24 * 3600; // assuming all data is in minutes
  * const datapoints = OizomDatapoint.create(input.device.deviceId, input.device.deviceType, {
