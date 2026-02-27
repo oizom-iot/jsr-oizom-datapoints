@@ -1,8 +1,16 @@
 {
   "version": "4",
+  "specifiers": {
+    "jsr:@panth977/data@~0.1.23": "0.1.23"
+  },
+  "jsr": {
+    "@panth977/data@0.1.23": {
+      "integrity": "1c3e5b50b5bc368c9da5571b67f34439757d3c7f8104167348e85883566d0f8e"
+    }
+  },
   "workspace": {
     "dependencies": [
-      "jsr:@panth977/data@~0.1.22"
+      "jsr:@panth977/data@~0.1.23"
     ]
   }
 }

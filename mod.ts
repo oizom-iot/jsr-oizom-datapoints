@@ -1,6 +1,7 @@
 /**
  * # Endpoint
  * - {@link OizomDatapoint}
+ * - {@link OizomDatapointFactoryBuilder}
  *
  * @module
  *

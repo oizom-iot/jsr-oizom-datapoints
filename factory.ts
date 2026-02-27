@@ -32,7 +32,7 @@ export class OizomDatapointFactoryBuilder {
     modal.optimize({
       gap: range.gapInMs,
       gte: range.gteInMs,
-      lte: range.lteInMs,
+      lte: range.lteInMs + range.gapInMs,
     });
     return new PredefinedOizomDatapoints(
       device.deviceId,
@@ -64,11 +64,7 @@ export class OizomDatapointFactoryBuilder {
         }
       }
     }
-    modal.optimize({
-      gap: Math.ceil((range.lteInMs - range.gteInMs) / range.count),
-      gte: range.gteInMs,
-      lte: range.lteInMs,
-    });
+    modal.optimize({ gte: range.gteInMs, count: range.count + 1 });
     return new RelativeOizomDatapoints(
       device.deviceId,
       device.deviceType,
@@ -96,7 +92,7 @@ export class OizomDatapointFactoryBuilder {
       }
     }
     const now = Date.now();
-    modal.optimize({ gap: 1, gte: now + 1, lte: now + 2 });
+    modal.optimize({ gte: now + 1, count: 1 });
     return new RelativeOizomDatapoints(
       device.deviceId,
       device.deviceType,
