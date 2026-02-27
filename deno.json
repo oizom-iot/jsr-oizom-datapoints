@@ -1,6 +1,6 @@
 {
   "name": "@oizom/oizom-datapoints",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "exports": "./mod.ts",
   "tasks": {
@@ -13,6 +13,6 @@
     }
   },
   "imports": {
-    "@panth977/data": "jsr:@panth977/data@^0.1.21"
+    "@panth977/data": "jsr:@panth977/data@^0.1.22"
   }
 }
