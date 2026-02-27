@@ -18,11 +18,6 @@ export class OizomDatapointFactoryBuilder {
     size: { [K in keyof CT]: number | string[] },
   ): OizomDatapoint {
     const modal = PredefinedOizomDatapoints.parser.create();
-    modal.optimize({
-      gap: range.gapInMs,
-      gte: range.gteInMs,
-      lte: range.lteInMs,
-    });
     for (const topic in size) {
       const s = size[topic as keyof CT];
       if (typeof s === "number") {
@@ -34,6 +29,11 @@ export class OizomDatapointFactoryBuilder {
         }
       }
     }
+    modal.optimize({
+      gap: range.gapInMs,
+      gte: range.gteInMs,
+      lte: range.lteInMs,
+    });
     return new PredefinedOizomDatapoints(
       device.deviceId,
       device.deviceType,
@@ -53,11 +53,6 @@ export class OizomDatapointFactoryBuilder {
     size: { [K in keyof CT]: number | string[] },
   ): OizomDatapoint {
     const modal = RelativeOizomDatapoints.parser.create();
-    modal.optimize({
-      gap: Math.ceil((range.lteInMs - range.gteInMs) / range.count),
-      gte: range.gteInMs,
-      lte: range.lteInMs,
-    });
     for (const topic in size) {
       const s = size[topic as keyof CT];
       if (typeof s === "number") {
@@ -69,6 +64,11 @@ export class OizomDatapointFactoryBuilder {
         }
       }
     }
+    modal.optimize({
+      gap: Math.ceil((range.lteInMs - range.gteInMs) / range.count),
+      gte: range.gteInMs,
+      lte: range.lteInMs,
+    });
     return new RelativeOizomDatapoints(
       device.deviceId,
       device.deviceType,
@@ -95,6 +95,8 @@ export class OizomDatapointFactoryBuilder {
         }
       }
     }
+    const now = Date.now();
+    modal.optimize({ gap: 1, gte: now + 1, lte: now + 2 });
     return new RelativeOizomDatapoints(
       device.deviceId,
       device.deviceType,
