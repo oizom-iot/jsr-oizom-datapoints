@@ -1,7 +1,8 @@
-import { OizomDatapoint, type Compact, type Legacy } from "./factory.ts";
+import type { OizomDatapoint, Compact, Legacy } from "./base.ts";
 import { D } from "@panth977/data";
 import { PredefinedOizomDatapoints } from "./predefined.ts";
 import { RelativeOizomDatapoints } from "./relative.ts";
+import { OizomDatapointFactoryBuilder } from "./factory.ts";
 
 abstract class Parser<T> {
   abstract to(dp: OizomDatapoint): T;
@@ -102,7 +103,7 @@ export class LegacyParser extends Parser<Legacy> {
     const meta = [...new Set(data.map((x) => Object.keys(x.payload.s)).flat())];
     let dp: OizomDatapoint;
     if (data.length === 1) {
-      dp = OizomDatapoint.single(data[0], {
+      dp = OizomDatapointFactoryBuilder.single(data[0], {
         data: keys.length,
         meta: meta.length,
       });
@@ -112,14 +113,14 @@ export class LegacyParser extends Parser<Legacy> {
       for (let i = 1; i < data.length; i++) {
         gaps.add(data[i - 1].payload.t - data[i].payload.t);
       }
-      const gapInSec = OizomDatapoint.HCF(...gaps);
+      const gapInSec = OizomDatapointFactoryBuilder.HCF(...gaps);
       if (
         // packing efficiency
         (data.length * gapInSec) /
           (data[0].payload.t - data[data.length - 1].payload.t) <
         0.7
       ) {
-        dp = OizomDatapoint.createUnPeriodic(
+        dp = OizomDatapointFactoryBuilder.createUnPeriodic(
           data[0],
           {
             count: data.length,
@@ -129,7 +130,7 @@ export class LegacyParser extends Parser<Legacy> {
           { data: keys, meta: meta },
         );
       } else {
-        dp = OizomDatapoint.createPeriodic(
+        dp = OizomDatapointFactoryBuilder.createPeriodic(
           data[0],
           {
             gapInMs: gapInSec * 1000,
@@ -200,11 +201,11 @@ export class CompactParser extends Parser<Compact> {
     const keys = [...new Set(data.keys)];
     const meta = [...new Set(data.labels)];
     if (data.data.length === 0) {
-      return OizomDatapoint.empty(data);
+      return OizomDatapointFactoryBuilder.empty(data);
     }
     let dp: OizomDatapoint;
     if (data.data.length === 1) {
-      dp = OizomDatapoint.single(data, {
+      dp = OizomDatapointFactoryBuilder.single(data, {
         data: keys.length,
         meta: meta.length,
       });
@@ -214,11 +215,11 @@ export class CompactParser extends Parser<Compact> {
       for (let i = 1; i < data.data.length; i++) {
         gaps.add(data.data[i - 1][0] - data.data[i][0]);
       }
-      const gapInSec = OizomDatapoint.HCF(...gaps);
+      const gapInSec = OizomDatapointFactoryBuilder.HCF(...gaps);
       const expected =
         (data.data[0][0] - data.data[data.data.length - 1][0]) / gapInSec;
       if (data.data.length / expected < 0.7) {
-        dp = OizomDatapoint.createUnPeriodic(
+        dp = OizomDatapointFactoryBuilder.createUnPeriodic(
           data,
           {
             count: data.data.length,
@@ -228,7 +229,7 @@ export class CompactParser extends Parser<Compact> {
           { data: keys, meta: meta },
         );
       } else {
-        dp = OizomDatapoint.createPeriodic(
+        dp = OizomDatapointFactoryBuilder.createPeriodic(
           data,
           {
             gapInMs: gapInSec * 1000,

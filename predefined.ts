@@ -1,5 +1,5 @@
 import { D } from "@panth977/data";
-import { OizomDatapoint } from "./factory.ts";
+import { OizomDatapoint } from "./base.ts";
 
 type Modal = D.PredefinedEpochAxis<{
   data: D.KeyAxis<D.FloatDataArray>;
