@@ -1,6 +1,4 @@
 import type { D } from "@panth977/data";
-import { PredefinedOizomDatapoints } from "./predefined.ts";
-import { RelativeOizomDatapoints } from "./relative.ts";
 import { Base64Parser, CompactParser, LegacyParser } from "./parser.ts";
 
 /**
@@ -245,32 +243,14 @@ export abstract class OizomDatapoint
    * @param size - Number of columns or specific column keys for data/meta.
    */
   static createPeriodic(
+    // deno-lint-ignore no-unused-vars
     device: Device,
+    // deno-lint-ignore no-unused-vars
     range: { gteInMs: number; lteInMs: number; gapInMs: number },
+    // deno-lint-ignore no-unused-vars
     size: { [K in keyof CT]: number | string[] },
   ): OizomDatapoint {
-    const modal = PredefinedOizomDatapoints.parser.create();
-    modal.optimize({
-      gap: range.gapInMs,
-      gte: range.gteInMs,
-      lte: range.lteInMs,
-    });
-    for (const topic in size) {
-      const s = size[topic as keyof CT];
-      if (typeof s === "number") {
-        modal.expandCol(topic as keyof CT, s);
-      } else {
-        modal.expandCol(topic as keyof CT, s.length);
-        for (const c of s) {
-          modal.getCIdx(topic as keyof CT, c, true);
-        }
-      }
-    }
-    return new PredefinedOizomDatapoints(
-      device.deviceId,
-      device.deviceType,
-      modal,
-    );
+    throw new Error("Will be implemented later");
   }
 
   /**
@@ -280,69 +260,36 @@ export abstract class OizomDatapoint
    * @param size - Number of columns or specific column keys.
    */
   static createUnPeriodic(
+    // deno-lint-ignore no-unused-vars
     device: Device,
+    // deno-lint-ignore no-unused-vars
     range: { gteInMs: number; lteInMs: number; count: number },
+    // deno-lint-ignore no-unused-vars
     size: { [K in keyof CT]: number | string[] },
   ): OizomDatapoint {
-    const modal = RelativeOizomDatapoints.parser.create();
-    modal.optimize({
-      gap: Math.ceil((range.lteInMs - range.gteInMs) / range.count),
-      gte: range.gteInMs,
-      lte: range.lteInMs,
-    });
-    for (const topic in size) {
-      const s = size[topic as keyof CT];
-      if (typeof s === "number") {
-        modal.expandCol(topic as keyof CT, s);
-      } else {
-        modal.expandCol(topic as keyof CT, s.length);
-        for (const c of s) {
-          modal.getCIdx(topic as keyof CT, c, true);
-        }
-      }
-    }
-    return new RelativeOizomDatapoints(
-      device.deviceId,
-      device.deviceType,
-      modal,
-    );
+    throw new Error("Will be implemented later");
   }
 
   /**
    * Creates a datapoint instance containing a single measurement point.
    */
   static single(
+    // deno-lint-ignore no-unused-vars
     device: Device,
+    // deno-lint-ignore no-unused-vars
     size: { [K in keyof CT]: number | string[] },
   ): OizomDatapoint {
-    const modal = RelativeOizomDatapoints.parser.create();
-    for (const topic in size) {
-      const s = size[topic as keyof CT];
-      if (typeof s === "number") {
-        modal.expandCol(topic as keyof CT, s);
-      } else {
-        modal.expandCol(topic as keyof CT, s.length);
-        for (const c of s) {
-          modal.getCIdx(topic as keyof CT, c, true);
-        }
-      }
-    }
-    return new RelativeOizomDatapoints(
-      device.deviceId,
-      device.deviceType,
-      modal,
-    );
+    throw new Error("Will be implemented later");
   }
 
   /**
    * Creates an empty OizomDatapoint instance.
    */
-  static empty(device: Device): OizomDatapoint {
-    return new RelativeOizomDatapoints(
-      device.deviceId,
-      device.deviceType,
-      RelativeOizomDatapoints.parser.create(),
-    );
+  static empty(
+    // deno-lint-ignore no-unused-vars
+    device: Device,
+  ): OizomDatapoint {
+    throw new Error("Will be implemented later");
   }
 
   /**
@@ -360,15 +307,5 @@ export abstract class OizomDatapoint
       i++;
     }
     return a;
-  }
-
-  /**
-   * Checks if the timestamps are strictly in ascending order.
-   * @returns "YES" for Predefined, "UNKNOWN" for Relative types.
-   */
-  isTimeInAsc(): "YES" | "UNKNOWN" {
-    if (this instanceof PredefinedOizomDatapoints) return "YES";
-    if (this instanceof RelativeOizomDatapoints) return "UNKNOWN";
-    throw new Error("Unknown type found");
   }
 }

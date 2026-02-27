@@ -43,4 +43,79 @@
  * ```
  */
 
+import { OizomDatapoint, type CT } from "./factory.ts";
+import { PredefinedOizomDatapoints } from "./predefined.ts";
+import { RelativeOizomDatapoints } from "./relative.ts";
+
 export * from "./factory.ts";
+
+OizomDatapoint.createPeriodic = function (device, range, size) {
+  const modal = PredefinedOizomDatapoints.parser.create();
+  modal.optimize({
+    gap: range.gapInMs,
+    gte: range.gteInMs,
+    lte: range.lteInMs,
+  });
+  for (const topic in size) {
+    const s = size[topic as keyof CT];
+    if (typeof s === "number") {
+      modal.expandCol(topic as keyof CT, s);
+    } else {
+      modal.expandCol(topic as keyof CT, s.length);
+      for (const c of s) {
+        modal.getCIdx(topic as keyof CT, c, true);
+      }
+    }
+  }
+  return new PredefinedOizomDatapoints(
+    device.deviceId,
+    device.deviceType,
+    modal,
+  );
+};
+
+OizomDatapoint.createUnPeriodic = function (device, range, size) {
+  const modal = RelativeOizomDatapoints.parser.create();
+  modal.optimize({
+    gap: Math.ceil((range.lteInMs - range.gteInMs) / range.count),
+    gte: range.gteInMs,
+    lte: range.lteInMs,
+  });
+  for (const topic in size) {
+    const s = size[topic as keyof CT];
+    if (typeof s === "number") {
+      modal.expandCol(topic as keyof CT, s);
+    } else {
+      modal.expandCol(topic as keyof CT, s.length);
+      for (const c of s) {
+        modal.getCIdx(topic as keyof CT, c, true);
+      }
+    }
+  }
+  return new RelativeOizomDatapoints(device.deviceId, device.deviceType, modal);
+};
+
+OizomDatapoint.single = function (device, size) {
+  const modal = RelativeOizomDatapoints.parser.create();
+  for (const topic in size) {
+    const s = size[topic as keyof CT];
+    if (typeof s === "number") {
+      modal.expandCol(topic as keyof CT, s);
+    } else {
+      modal.expandCol(topic as keyof CT, s.length);
+      for (const c of s) {
+        modal.getCIdx(topic as keyof CT, c, true);
+      }
+    }
+  }
+  return new RelativeOizomDatapoints(device.deviceId, device.deviceType, modal);
+};
+
+OizomDatapoint.empty = function (device) {
+  return new RelativeOizomDatapoints(
+    device.deviceId,
+    device.deviceType,
+    RelativeOizomDatapoints.parser.create(),
+  );
+};
+
