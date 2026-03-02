@@ -104,8 +104,8 @@ export class LegacyParser extends Parser<Legacy> {
     let dp: OizomDatapoint;
     if (data.length === 1) {
       dp = OizomDatapointFactoryBuilder.single(data[0], {
-        data: keys.length,
-        meta: meta.length,
+        data: keys,
+        meta: meta,
       });
     } else {
       // data = [...data].sort((x, y) => y.payload.t - x.payload.t);
@@ -206,8 +206,8 @@ export class CompactParser extends Parser<Compact> {
     let dp: OizomDatapoint;
     if (data.data.length === 1) {
       dp = OizomDatapointFactoryBuilder.single(data, {
-        data: keys.length,
-        meta: meta.length,
+        data: keys,
+        meta: meta,
       });
     } else {
       // data.data = [...data.data].sort((x, y) => y[0] - x[0]);
