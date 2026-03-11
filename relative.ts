@@ -2,12 +2,12 @@ import { D } from "@panth977/data";
 import { OizomDatapoint } from "./base.ts";
 
 type Modal = D.RelativeEpochAxis<{
-  data: D.KeyAxis<D.FloatDataArray>;
+  data: D.KeyAxis<D.JsonNumDataArray>;
   meta: D.KeyAxis<D.StrDataArray>;
 }>;
 export class RelativeOizomDatapoints extends OizomDatapoint {
   static parser = D.RelativeEpochAxis.parser({
-    data: D.KeyAxis.parser(D.FloatDataArray.parser()),
+    data: D.KeyAxis.parser(D.JsonNumDataArray.parser()),
     meta: D.KeyAxis.parser(D.StrDataArray.parser()),
   });
   static getModal(dp: RelativeOizomDatapoints): Modal {

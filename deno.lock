@@ -1,16 +1,16 @@
 {
-  "version": "4",
+  "version": "5",
   "specifiers": {
-    "jsr:@panth977/data@~0.1.23": "0.1.23"
+    "jsr:@panth977/data@~0.1.24": "0.1.24"
   },
   "jsr": {
-    "@panth977/data@0.1.23": {
-      "integrity": "1c3e5b50b5bc368c9da5571b67f34439757d3c7f8104167348e85883566d0f8e"
+    "@panth977/data@0.1.24": {
+      "integrity": "4fbab7070daa0370faa73903c47863dc903fe91814d8e145b908512a1db2aad5"
     }
   },
   "workspace": {
     "dependencies": [
-      "jsr:@panth977/data@~0.1.23"
+      "jsr:@panth977/data@~0.1.24"
     ]
   }
 }

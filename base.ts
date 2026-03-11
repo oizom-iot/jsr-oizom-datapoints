@@ -66,7 +66,7 @@ export type Compact = {
  */
 export type Modal = Pick<
   D.EpochAxis<{
-    data: D.KeyAxis<D.FloatDataArray>;
+    data: D.KeyAxis<D.JsonNumDataArray>;
     meta: D.KeyAxis<D.StrDataArray>;
   }>,
   | "expandCol"
